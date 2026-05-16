@@ -1,47 +1,47 @@
-name: 'Deploy to Coolify'
-description: 'Deploy to Coolify with optional Cloudflare Bot Fight Mode bypass and GitHub Deployments'
-author: 'ilhmlnaa'
+name: "Coolify Deploy with BFM Bypass"
+description: "Deploy to Coolify with optional Cloudflare Bot Fight Mode bypass and GitHub Deployments"
+author: "ilhmlnaa"
 branding:
-  icon: 'upload-cloud'
-  color: 'purple'
+  icon: "upload-cloud"
+  color: "purple"
 
 inputs:
   coolify_webhook_url:
-    description: 'Coolify webhook URL(s). Comma-separated or newline-separated for multi-service deploy.'
+    description: "Coolify webhook URL(s). Comma-separated or newline-separated for multi-service deploy."
     required: true
   coolify_token:
-    description: 'Coolify API Bearer token'
+    description: "Coolify API Bearer token"
     required: true
   cloudflare_api_token:
-    description: 'Cloudflare API token (optional, enables Bot Fight Mode bypass)'
+    description: "Cloudflare API token (optional, enables Bot Fight Mode bypass)"
     required: false
-    default: ''
+    default: ""
   cloudflare_zone_id:
-    description: 'Cloudflare Zone ID (required if cloudflare_api_token is set)'
+    description: "Cloudflare Zone ID (required if cloudflare_api_token is set)"
     required: false
-    default: ''
+    default: ""
   bypass_cloudflare_bot:
     description: '"true", "false", or "auto" (auto = true if CF credentials are provided)'
     required: false
-    default: 'auto'
+    default: "auto"
   propagation_delay:
-    description: 'Seconds to wait after disabling Bot Fight Mode before deploying (default: 15)'
+    description: "Seconds to wait after disabling Bot Fight Mode before deploying (default: 15)"
     required: false
-    default: '15'
+    default: "15"
   create_github_deployment:
     description: 'Create a GitHub Deployment record ("true"/"false")'
     required: false
-    default: 'false'
+    default: "false"
   deployment_environment:
-    description: 'GitHub Deployment environment name'
+    description: "GitHub Deployment environment name"
     required: false
-    default: 'production'
+    default: "production"
   app_url:
     description: 'App URL for deployment status. Use "auto" to resolve from Coolify API fqdn field.'
     required: false
-    default: ''
+    default: ""
   github_token:
-    description: 'GitHub token for Deployment API (defaults to GITHUB_TOKEN)'
+    description: "GitHub token for Deployment API (defaults to GITHUB_TOKEN)"
     required: false
     default: ${{ github.token }}
 
@@ -49,16 +49,16 @@ outputs:
   deployment_status:
     description: '"success" or "failure"'
   deployed_services:
-    description: 'Number of services successfully deployed'
+    description: "Number of services successfully deployed"
   bot_mode_restored:
     description: '"true", "false", or "skipped"'
   github_deployment_id:
-    description: 'GitHub Deployment ID (if created)'
+    description: "GitHub Deployment ID (if created)"
   resolved_app_url:
     description: 'Resolved app URL (from Coolify fqdn if app_url is "auto")'
 
 runs:
-  using: 'node20'
-  main: 'dist/main/index.js'
-  post: 'dist/post/index.js'
-  post-if: 'always()'
+  using: "node20"
+  main: "dist/main/index.js"
+  post: "dist/post/index.js"
+  post-if: "always()"
