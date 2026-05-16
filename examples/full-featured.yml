@@ -1,0 +1,41 @@
+name: Full-Featured Coolify Deploy
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: ilhmlnaa/coolify-deploy@v1
+        id: deploy
+        with:
+          # Multi-service deploy
+          coolify_webhook_url: |
+            ${{ secrets.API_WEBHOOK }},
+            ${{ secrets.WORKER_WEBHOOK }},
+            ${{ secrets.WEB_WEBHOOK }}
+          coolify_token: ${{ secrets.COOLIFY_TOKEN }}
+
+          # Cloudflare Bot Fight Mode bypass
+          cloudflare_api_token: ${{ secrets.CF_API_TOKEN }}
+          cloudflare_zone_id: ${{ secrets.CF_ZONE_ID }}
+          bypass_cloudflare_bot: 'auto'
+          propagation_delay: '15'
+
+          # GitHub Deployment with auto-resolved app URL
+          create_github_deployment: 'true'
+          deployment_environment: 'production'
+          app_url: 'auto'
+
+      - name: Print outputs
+        run: |
+          echo "Status: ${{ steps.deploy.outputs.deployment_status }}"
+          echo "Services: ${{ steps.deploy.outputs.deployed_services }}"
+          echo "Deployment ID: ${{ steps.deploy.outputs.github_deployment_id }}"
+          echo "App URL: ${{ steps.deploy.outputs.resolved_app_url }}"

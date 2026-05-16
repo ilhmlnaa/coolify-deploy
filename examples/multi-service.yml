@@ -1,0 +1,17 @@
+name: Multi-Service Deploy
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ilhmlnaa/coolify-deploy@v1
+        with:
+          # Comma-separated or newline-separated webhook URLs
+          coolify_webhook_url: |
+            ${{ secrets.API_WEBHOOK }},
+            ${{ secrets.WORKER_WEBHOOK }},
+            ${{ secrets.WEB_WEBHOOK }}
+          coolify_token: ${{ secrets.COOLIFY_TOKEN }}

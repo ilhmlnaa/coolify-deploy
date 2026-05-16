@@ -1,0 +1,13 @@
+name: Basic Coolify Deploy
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ilhmlnaa/coolify-deploy@v1
+        with:
+          coolify_webhook_url: ${{ secrets.COOLIFY_WEBHOOK_URL }}
+          coolify_token: ${{ secrets.COOLIFY_TOKEN }}
